@@ -2,7 +2,7 @@ require("dotenv").config(); //process
 const app = require("./index");
 const db = require("./config/db")
 
-const PORT = process.env.PORT || 4200;
+const PORT = process.env.PORT || 4300;
 db.connectToMongoDB() //connect to mongoDB
 
 
