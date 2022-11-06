@@ -1,74 +1,73 @@
-# blogging-api
+# Blogging-api
 Altschool assessment in blog api
 
 --
 
-## Requirements
-1. User should be able to register 
-2. User should be able to login with Passport using JWT
-3. Implement basic auth
-4. User should be able to get orders
-5. Users should be able to create orders
-6. Users should be able to update and delete orders
-7. Test application
-
-
-### THE ENDPOINTS
--------
-
-
-| S.no   | route            | Method |  Description  |
-| :---   |    :----        | ---:   |   :---        |
-| 1      | "/signup"        | POST   |   create a new user |
-| 2      | "/login"         | POST   |  log in to the app |
-| 3      | "/blog/post"       | POST   |  add a new Blog           |
-| 4      | "/blog/posts"      | GET    |    get all blog posts   |
-| 5      | "/blog/post/:id"| GET   |   get a blog |
-| 8      | "/blog/post/:id"     | DELETE | delete Blog By Id     |
-| 9      | "/blog/post/:id"| PUT |updatong a blog post   |
-| 10
-
-
-### Here is a guide to using the application.
+### Try the api.
 -----
 
-- [x] create a new user 
+- [x] create a new user (POST, /signup)
 ```json
 {
-  "firstName": "John",
-  "lastName": "Smith",
-  "username": "JohnDoe",
-  "bio": "cool cat",
-  "gender": "male",
-  "email": "johnny@example.com,
-  "password": "myverystrongpassword"
+   "first_name": "Khan",
+   "last_name": "Tir",
+   "email": "TirKhan@yummy.ng",
+   "password": "Kh@ntir123"
 }
 ```
-- [x] Log into the application
+- [x] Log into the application (POST, /login)
 
 ```json
 {
-  "email": "johnny@example.com,
-  "password": "myverystrongpassword"
+  "email": "TirKhan@yummy.ng",
+  "password": "Kh@ntir123"
 }
 ```
+** Remember to add the - Authorization: Bearer {token} 
 
-- [x] Post a new blog
+- [x] Add blog (POST, /blog/post)
 
 ```json
 {
-    title: "my new blog",
-    "description": "Trying out blogging",
-    "body": "lorem ipsum lorem ipsum lorem ipsum, lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsumlorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-    tags: ["first", "lorem", "new"]
+    "title": "My day",
+    "description": "My day in a few words",
+    "author": "Khan Tir",
+    "tags": ["day", "Lorem"],
+    "body":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus architecto enim cum tempore autem at, porro ad et nisi vel delectus aliquid! Ipsam odit saepe eaque sed fugiat dolores expedita perspiciatis ipsum tempore, iusto tenetur repellendus ratione esse blanditiis rerum voluptas officia adipisci alias enim ad dicta illo? Porro, non."
  }
+ 
+```
+- [x] Get blog posts (GET, /blog/posts)
+
+##Response
+```json
+{
+    "status": "New Post",
+    "blogPost": {
+        "title": "My day",
+        "description": "My day in a few words",
+        "author": "Khan Tir",
+        "state": "draft",
+        "read_count": 1,
+        "reading_time": "1 mins",
+        "tags": [
+            "day",
+            "Lorem"
+        ],
+        "body": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus architecto enim cum tempore autem at, porro ad et nisi vel delectus aliquid! Ipsam odit saepe eaque sed fugiat dolores expedita perspiciatis ipsum tempore, iusto tenetur repellendus ratione esse blanditiis rerum voluptas officia adipisci alias enim ad dicta illo? Porro, non.",
+        "timestamp": "2022-11-06T23:37:43.273Z",
+        "_id": "63684547a7cd0b68f27debb9",
+        "__v": 0
+    }
+}
+  
 ```
     
-- [x] Update the state of the blog to published
+- [x] Update the blog (PUT, /blog/post/:id)
 
 ```json
 {
   "state": "published"
 }
 ```
-Explore the rest of the endpoints
+
