@@ -1,9 +1,8 @@
 # Blogging-api
 Altschool assessment in blog api
 
---
 
-## Try the api.
+## Try the apis.
 -----
 
 - [x] create a new user (POST, /signup)
