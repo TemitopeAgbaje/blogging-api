@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 
 const MONGODB_CONNECTION_URI = process.env.MONGODB_CONNECTION_URI;
 
+mongoose.set("strictQuery", false);
+
 //connect to MongoDB
 function connectToMongoDB() {
   mongoose.connect(MONGODB_CONNECTION_URI);
