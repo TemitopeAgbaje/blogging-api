@@ -1,7 +1,6 @@
 const blogModel = require("../models/blogModel");
 const moment = require("moment");
 
-
 exports.createBlogPost = async (req, res) => {
   const text = req.body.body;
   const wpm = 225;
@@ -75,6 +74,11 @@ exports.getBlogPost = async (req, res) => {
   const { id } = req.params;
 
   const blogPost = await blogModel.findById({ _id: id });
+
+  blogPost.read_count = blogPost.read_count += 1;
+
+  await blogPost.save();
+  
   return res.status(200).json({ status: "Post Loaded", blogPost });
 };
 
@@ -84,10 +88,6 @@ exports.updateBlogPost = async (req, res) => {
 
   if (req.body.state) {
     blogPost.state = req.body.state;
-  }
-
-  if (req.body.read_count) {
-    blogPost.read_count = blogPost.read_count += 1;
   }
 
   if (req.body.author) {
