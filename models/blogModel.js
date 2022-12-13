@@ -14,7 +14,7 @@ const blogSchema = new Schema({
     enum: ["draft", "published"],
     default: "draft",
   },
-  read_count: { type: Number, default: 1 },
+  read_count: { type: Number, default: 0 },
   reading_time: String,
   tags: Array,
   body: {

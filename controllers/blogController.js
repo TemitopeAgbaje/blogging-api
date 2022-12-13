@@ -34,7 +34,7 @@ exports.getBlogPosts = async (req, res) => {
     tags,
   } = query;
 
-  const findQuery = {};
+  let findQuery = {};
 
   if (timestamp) {
     findQuery.timestamp = {
@@ -56,7 +56,8 @@ exports.getBlogPosts = async (req, res) => {
   }
 
   if (author) {
-    findQuery.author = author;
+    // findQuery.author = author;
+    findQuery = { ...findQuery, "author": { "$regex": author, "$options": "i" } }
   }
 
   if (title) {
@@ -65,7 +66,11 @@ exports.getBlogPosts = async (req, res) => {
 
   if (tags) {
     findQuery.tags = tags.split("");
+  //  findQuery = { tags: { $in:  tags } }
+  //  console.log({ tags: { $in:  tags } })
+  //  console.log(findQuery.tags = tags.split(""))
   }
+
   const blogPosts = await blogModel.find(findQuery).skip(page).limit(per_page);
   return res.status(200).json({ status: "All Post Loaded", blogPosts });
 };
@@ -78,7 +83,7 @@ exports.getBlogPost = async (req, res) => {
   blogPost.read_count = blogPost.read_count += 1;
 
   await blogPost.save();
-  
+
   return res.status(200).json({ status: "Post Loaded", blogPost });
 };
 
