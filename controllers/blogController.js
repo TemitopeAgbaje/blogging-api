@@ -52,44 +52,60 @@ exports.getBlogPosts = async (req, res) => {
   }
 
   if (reading_time) {
-    findQuery.reading_time = reading_time;
+    findQuery = {
+      ...findQuery,
+      reading_time: { $regex: reading_time, $options: "i" },
+    };
+    console.log({ findQuery });
   }
 
   if (author) {
     // findQuery.author = author;
-    findQuery = { ...findQuery, "author": { "$regex": author, "$options": "i" } }
+    findQuery = { ...findQuery, author: { $regex: author, $options: "i" } };
   }
 
   if (title) {
-    findQuery.title = title;
+    findQuery = { ...findQuery, title: { $regex: title, $options: "i" } };
   }
 
   if (tags) {
-    findQuery.tags = tags.split("");
-  //  findQuery = { tags: { $in:  tags } }
-  //  console.log({ tags: { $in:  tags } })
-  //  console.log(findQuery.tags = tags.split(""))
+    findQuery = { ...findQuery, tags: { $in: tags } };
   }
 
-  const blogPosts = await blogModel.find(findQuery).skip(page).limit(per_page);
+  const blogPosts = await blogModel
+    .find(findQuery)
+    .skip(page - 1)
+    .limit(per_page);
   return res.status(200).json({ status: "All Post Loaded", blogPosts });
 };
 
 exports.getBlogPost = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  const blogPost = await blogModel.findById({ _id: id });
+    const blogPost = await blogModel.findById({ _id: id });
 
-  blogPost.read_count = blogPost.read_count += 1;
+    if (!blogPost) {
+      return res.status(404).json({ status: "Blog Post Not found" });
+    }
 
-  await blogPost.save();
+    blogPost.read_count = blogPost.read_count += 1;
 
-  return res.status(200).json({ status: "Post Loaded", blogPost });
+    await blogPost.save();
+
+    return res.status(200).json({ status: "Post Loaded", blogPost });
+  } catch (err) {
+    return res.status(400).json({ message: "Bad Request" });
+  }
 };
 
-exports.updateBlogPost = async (req, res) => {
+exports.updateBlogPost = async (req, res, next) => {
   const { id } = req.params;
   const blogPost = await blogModel.findById({ _id: id });
+
+  if (!blogPost) {
+    return res.status(400).json({ message: "No blog Post" });
+  }
 
   if (req.body.state) {
     blogPost.state = req.body.state;

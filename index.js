@@ -9,8 +9,8 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 
-app.use(passport.initialize())
-require("./middlewares/auth")
+app.use(passport.initialize());
+require("./middlewares/auth");
 
 app.get("/", (req, res) => {
   res.send("<h2>Welcome to my blog!</h2>");
@@ -18,5 +18,10 @@ app.get("/", (req, res) => {
 
 app.use("/blog", passport.authenticate("jwt", { session: false }), blogRouter);
 app.use("/", authRouter);
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Something broke!" });
+});
 
 module.exports = app;
