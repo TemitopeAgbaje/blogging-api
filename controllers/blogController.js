@@ -56,7 +56,6 @@ exports.getBlogPosts = async (req, res) => {
       ...findQuery,
       reading_time: { $regex: reading_time, $options: "i" },
     };
-    console.log({ findQuery });
   }
 
   if (author) {
