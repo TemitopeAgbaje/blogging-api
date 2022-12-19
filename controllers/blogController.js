@@ -88,11 +88,13 @@ exports.getBlogPost = async (req, res) => {
       return res.status(404).json({ status: "Blog Post Not found" });
     }
 
-    blogPost.read_count = blogPost.read_count += 1;
+    if (blogPost.state === "published") {
+      blogPost.read_count = blogPost.read_count += 1;
+    }
 
     await blogPost.save();
 
-    return res.status(200).json({ status: "Post Loaded", blogPost });
+    return res.status(200).json({ status: "Blog Post Loaded", blogPost });
   } catch (err) {
     return res.status(400).json({ message: "Bad Request" });
   }
@@ -129,7 +131,14 @@ exports.updateBlogPost = async (req, res, next) => {
 
 exports.deleteBlogPost = async (req, res) => {
   const { id } = req.params;
-  const blogPost = await blogModel.deleteOne({ _id: id });
 
-  return res.status(200).json({ status: "Deleted  successful", blogPost });
+  const blogPost = await blogModel.findById({ _id: id });
+
+  if (!blogPost) {
+    return res.status(400).json({ message: "No blog Post" });
+  }
+
+  await blogPost.delete();
+
+  return res.status(200).json({ status: "Deleted successfully", blogPost });
 };
