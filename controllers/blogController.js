@@ -140,5 +140,5 @@ exports.deleteBlogPost = async (req, res) => {
 
   await blogPost.delete();
 
-  return res.status(200).json({ status: "Deleted successfully", blogPost });
+  return res.status(200).json({ status: "Deleted successfully"});
 };
