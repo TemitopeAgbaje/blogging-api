@@ -2,10 +2,12 @@ const express = require("express");
 const passport = require("passport");
 const blogRouter = require("./routes/blogRoutes");
 const authRouter = require("./routes/authRoutes");
+const bodyParser = require("body-parser");
 
 const app = express();
 
-app.use(express.json());
+app.use(bodyParser.json());
+// app.use(express.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 

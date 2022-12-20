@@ -63,7 +63,7 @@ describe("Blog Route", () => {
     expect(response.body.blogPost).toHaveProperty("reading_time");
     expect(response.body.blogPost).toHaveProperty("author");
     expect(response.body.blogPost).toHaveProperty("timestamp");
-    expect(response.body.blogPost.read_count).toBe(1);
+    expect(response.body.blogPost.read_count).toBe(0);
   });
 
   it("should get", async () => {
@@ -86,7 +86,7 @@ describe("Blog Route", () => {
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty("status", "Post Loaded");
+    expect(response.body).toHaveProperty("status", "Blog Post Loaded");
     expect(response.body).toHaveProperty("blogPost");
   });
 
@@ -109,16 +109,19 @@ describe("Blog Route", () => {
     expect(response.body.blogPost).toHaveProperty("tags");
     expect(response.body.blogPost.state).toBe("published");
     expect(response.body.blogPost).toHaveProperty("author");
-    expect(response.body.blogPost.read_count).toBe(1);
+    expect(response.body.blogPost.read_count).toBe(0);
   });
 
   it("should delete a post", async () => {
+    const blog = await blogModel.create(blogPost);
+
+    blogId = blog._id.toString();
+
     const response = await supertest(app)
       .delete("/blog/post/" + blogId)
       .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.status).toBe("Deleted  successful");
-    expect(response.body).toHaveProperty("blogPost");
+    expect(response.body.status).toBe("Deleted successfully");
   });
 });
